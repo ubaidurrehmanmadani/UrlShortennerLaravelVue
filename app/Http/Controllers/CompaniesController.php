@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompanyRequest;
 use App\Models\Companies;
 use Illuminate\Http\Request;
 
@@ -30,8 +31,12 @@ class CompaniesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
+        $validator = $request->validated();
+        if (is_object($validator)) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         return response()->json(Companies::create($request->all()));
     }
 
@@ -54,8 +59,13 @@ class CompaniesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Companies $company)
+    public function update(CompanyRequest $request, Companies $company)
     {
+        $validator = $request->validated();
+
+        if (is_object($validator)) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $company->update($request->all());
         return response()->json($company);
     }

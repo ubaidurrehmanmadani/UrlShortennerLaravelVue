@@ -12,6 +12,11 @@
                                 <button type="button" id="viewCompaniesBtn" class="btn btn-info m-2" onclick="$('#addCompanyForm').hide();$('#myTable').show();">View Companies</button>
                         </div>
                         <div id="addCompanyForm" class="form-group" style="display: none">
+                            <div v-if="validationErrors" class="alert alert-danger">
+                                <ul>
+                                    <li v-for="(error, key) in validationErrors" :key="key">{{ error[0] }}</li>
+                                </ul>
+                            </div>
                             <div class="row mb-2">
                                 <div class="col-2">
                                     <label for="name">Name</label>
@@ -93,7 +98,8 @@
                 email: '',
                 logo: '',
                 website: '',
-                edit_company_id: ''
+                edit_company_id: '',
+                validationErrors: null,
             }
         },
         methods:{
@@ -111,9 +117,17 @@
                     'website': this.website
                 };
                 this.axios.post(this.api, data).then(res => {
-                    this.companies.data.push(res.data);
+                    this.getCompanies()
                     this.name = this.email = this.logo = this.website = '';
                     $('#viewCompaniesBtn').trigger('click');
+                })
+                .catch((error) => {
+                    if (error.response.status === 422) {
+                        // If the request returns a 422 status code, it indicates validation errors
+                        this.validationErrors = error.response.data.errors;
+                    } else {
+                        console.error('Error:', error);
+                    }
                 });
             },
             deleteCompany(id){
@@ -138,9 +152,16 @@
                     'website': this.website
                 };
                 this.axios.patch(this.api + '/' + this.edit_company_id, data).then(res => {
-                    this.companies.data.pop(res.data);
-                    this.companies.data.push(res.data);
+                    this.getCompanies()
                     $('#viewCompaniesBtn').trigger('click');
+                })
+                .catch((error) => {
+                    if (error.response.status === 422) {
+                        // If the request returns a 422 status code, it indicates validation errors
+                        this.validationErrors = error.response.data.errors;
+                    } else {
+                        console.error('Error:', error);
+                    }
                 });
             }
         },
