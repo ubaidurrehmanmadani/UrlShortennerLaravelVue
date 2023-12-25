@@ -20,16 +20,15 @@ class UrlFeature
         if (filter_var($decodedUrl, FILTER_VALIDATE_URL))
         {
             $shortCode = self::getShortUrl($decodedUrl);
-            $result = SafeBrowsingGoogleAPI::checkSafeBrowsing(self::UN_TEST_SAFE_URLS);
+            $result = SafeBrowsingGoogleAPI::checkSafeBrowsing([$decodedUrl]);
             if($result['status']){
-                return response()->json(
-                    ShortenerUrl::create([
+                ShortenerUrl::create([
                     'url' => $url,
                     'short_code' => $shortCode,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
-                ])
-                );
+                ]);
+                return response()->json($result);
             }else{
                 return response()->json($result);
             }

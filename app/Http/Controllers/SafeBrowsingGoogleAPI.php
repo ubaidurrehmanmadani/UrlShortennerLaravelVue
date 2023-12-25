@@ -68,7 +68,7 @@ class SafeBrowsingGoogleAPI
             // You may want to take appropriate action here, such as blocking access to the URL.
         } else {
             // The URL is safe
-            return ['status' => true, 'message' => 'URL is safe!'];
+            return ['status' => true, 'message' => 'URL is safe, saved Successfully!'];
         }
     }
 }

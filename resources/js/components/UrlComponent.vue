@@ -13,10 +13,13 @@
                         </div>
                         <div id="addUrlForm" class="form-group" style="display: none">
                             <div v-if="validationErrors" class="alert alert-danger">
-                                <ul>
+                                <ul v-if="isArray(validationErrors)">
                                     <li v-for="(error, key) in validationErrors" :key="key">{{ error[0] }}</li>
                                 </ul>
+                                <span v-else>{{ validationErrors }}</span>
+
                             </div>
+                            <div v-if="successMessage" class="alert alert-success"><span>{{ successMessage }}</span></div>
                             <div class="row mb-2">
                                 <div class="col-2">
                                     <label for="url">Url</label>
@@ -58,12 +61,10 @@
 </template>
 
 <script>
-// import VuePaginate from 'vue-paginate'
+
+    import {isArray} from "pdfmake/src/helpers.js";
 
     export default {
-        // components: {
-        //     VuePaginate
-        // },
         data(){
             return {
                 urls: [],
@@ -71,9 +72,11 @@
                 url: '',
                 edit_url_id: '',
                 validationErrors: null,
+                successMessage: null
             }
         },
         methods:{
+            isArray,
             getUrls() {
                 this.axios.get(this.api).then(res => {
                     this.urls = res.data;
@@ -87,9 +90,16 @@
                 this.axios.post(this.api, data).then(res => {
                     this.getUrls()
                     this.url = '';
-                    $('#ViewUrlsBtn').trigger('click');
+                    if(res.status){
+                        this.successMessage = res.data.original.message;
+                        console.log(res)
+                        console.log(this.successMessage)
+                    }else{
+                        this.validationErrors = res.data.original.message;
+                    }
                 })
                 .catch((error) => {
+                    console.log(error)
                     if (error.response.status === 422) {
                         // If the request returns a 422 status code, it indicates validation errors
                         this.validationErrors = error.response.data.errors;
@@ -128,21 +138,7 @@
             }
         },
         mounted() {
-            console.log(this.getUrls());
-            // this.axios.get(this.api).then(res => {
-            //     // this.companies = res.data;
-            //     console.log(res.data)
-            //     // $('#myTable').DataTable( {
-            //     //     data: res.data,
-            //     //     columns: [
-            //     //         { data: 'id' },
-            //     //         { data: 'name' },
-            //     //         { data: 'email' },
-            //     //         { data: 'logo' }
-            //     //     ]
-            //     // } );
-            //
-            // });
+            this.getUrls();
         },
     }
 </script>
