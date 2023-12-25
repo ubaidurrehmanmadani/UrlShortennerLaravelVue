@@ -83,7 +83,7 @@
 </body>
 <script>
     $(document).ready(function(){
-        $("#companies").trigger('click')
+        $("#url_shortener").trigger('click')
     });
     function loadView(id){
         let divId = id+ '_id';

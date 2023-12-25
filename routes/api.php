@@ -18,7 +18,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('companies', \App\Http\Controllers\CompaniesController::class);
-Route::get('get_all_companies', [App\Http\Controllers\CompaniesController::class, 'getAll'])->name('getAllCompanies');
-
-Route::resource('employees', \App\Http\Controllers\EmployeesController::class);
+Route::resource('manage_url', \App\Http\Controllers\UrlController::class);
+Route::get('generate_url/{short_code}', [\App\Http\Controllers\UrlController::class, 'generateUrl'])->name('generate_url');

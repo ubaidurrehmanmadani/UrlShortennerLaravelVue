@@ -12,8 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'datatables.net-buttons/js/buttons.flash';
 // import 'datatables.net-buttons/js/buttons.html5';
 // import 'datatables.net-buttons/js/buttons.print';
-import CompaniesComponent from './components/CompaniesComponent.vue';
-import EmployeesComponent from "./components/EmployeesComponent.vue";
+import UrlComponent from './components/UrlComponent.vue';
 import {createRouter, createWebHistory} from "vue-router";
 import axios from "axios";
 // window.$ = window.jquery = require('jquery');
@@ -22,14 +21,9 @@ import VueAxios from "vue-axios";
 const routes = [
     {
         path: '/',
-        name: 'companies',
-        component: CompaniesComponent,
-    },
-    {
-        path: '/employees',
-        name: 'Employees',
-        component: EmployeesComponent,
-    },
+        name: 'manage_url',
+        component: UrlComponent,
+    }
 ]
 const router = createRouter({
     history: createWebHistory(),
@@ -37,11 +31,8 @@ const router = createRouter({
 })
 const app = createApp({});
 app.use(VueAxios, axios);
-// app.use(datatable);
 app.use($)
-app.component('companies-component', CompaniesComponent);
-app.component('employees-component', EmployeesComponent);
-
+app.component('url-component', UrlComponent);
 app.mount('#app');
 
 export default router

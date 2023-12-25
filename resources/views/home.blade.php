@@ -3,18 +3,13 @@
 @section('content')
 
 <div class="sidenav">
-    <a href="javascript:void(0)" id="companies" onclick="loadView(this.id)">Companies</a>
-    <a href="javascript:void(0)" id="employees" onclick="loadView(this.id)">Employees</a>
+    <a href="javascript:void(0)" id="url_shortener" onclick="loadView(this.id)">Url Manager</a>
 </div>
 
 <div class="main" id="app">
-    <div id="companies_id" style="display: none">
-        <companies-component></companies-component>
+    <div id="urls_id">
+        <url-component></url-component>
     </div>
-    <div id="employees_id" style="display: none">
-        <employees-component></employees-component>
-    </div>
-
 </div>
 <div class="container">
     <div class="row justify-content-center">

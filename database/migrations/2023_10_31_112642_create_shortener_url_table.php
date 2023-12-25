@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('shortener_url', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->bigInteger('company_id');
-            $table->string('email')->unique();
-            $table->string('phone')->nullable()->default(null);
+            $table->string('url')->unique();
+            $table->string('short_code')->unique();
+            $table->string('hits')->nullable()->default(null);
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('shortener_url');
     }
 };
